@@ -1,0 +1,2 @@
+For proper placement all images should be 32x32 regardless of the objects size.
+This will allow the object to render on the tile at it's same point in the 32x32 image.

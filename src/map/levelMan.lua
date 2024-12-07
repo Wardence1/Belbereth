@@ -4,6 +4,9 @@ local levelMan = {}
 local images = require("src.images")
 local tile = require("src.map.tile")
 
+-- Bottom Floor
+MAX_FLOOR = 20
+
 -- Amount of tiles in the level
 LEVEL_WIDTH = 60
 LEVEL_HEIGHT = 24
@@ -48,10 +51,12 @@ function levelMan:draw()
         for j = 1, LEVEL_WIDTH, 1 do
             local currTile = self.levels[self.current].map[i][j]
 
-            drawTerrain(currTile, (j * tile.size) - tile.size, (i * tile.size) - tile.size)
-
+            if currTile ~= nil then
+                drawTerrain(currTile, (j * tile.size) - tile.size, (i * tile.size) - tile.size)
+            end
 
             -- Draw objects on the tiles
+
 
             -- Draw enemies on the tiles
         end

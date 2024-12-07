@@ -8,7 +8,8 @@ local images = require("src.images")
 function game:load()
     images:load()
     --love.graphics.scale(SCALE, SCALE)
-    push:setupScreen(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {fullscreen = false})
+    push:setupScreen(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,
+    { fullscreen = false, pixelperfect = true })
 
     -- Scenes
     sceneMan:newScene("game", require("src.scenes.gameScene"))
@@ -25,6 +26,10 @@ function game:draw()
     push:start()
     sceneMan:event("draw")
     push:finish()
+end
+
+function game:keypressed(key, scancode, isrepeat)
+    sceneMan:event("keypressed", key, scancode, isrepeat)
 end
 
 return game

@@ -15,6 +15,11 @@ function images:load()
 
 
     -- Player
+    images.player = love.graphics.newImage("res/entities/player.png")
+
+    -- Fonts
+    images.tFont = love.graphics.newFont("res/fonts/VT323-Regular.ttf", 24) -- terminal font
+    images.tFont:setFilter("nearest", "nearest") -- WHYYYY
 end
 
 return images

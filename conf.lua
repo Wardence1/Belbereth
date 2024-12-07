@@ -7,6 +7,7 @@ function love.conf (t)
     t.console = true
     t.window.width = WINDOW_WIDTH
     t.window.height = WINDOW_HEIGHT
-    t.window.title = "Traditional Rougelike"
+    t.window.title = "Belbereth"
     t.window.display = 1
+    t.fsaa = 0
 end
