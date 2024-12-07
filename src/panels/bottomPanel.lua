@@ -31,6 +31,16 @@ function bPan:draw()
 end
 
 function bPan:write(text)
+
+    -- Errors
+    if type(text) ~= "string" then
+        error("Only strings are allowed to be written on the terminal.")
+    end
+    if #text >= 75 then
+        error(text .. ", is too long to be properly displayed within the terminal.")
+    end
+
+    -- Inserting the text and moving all other lines back
     table.insert(self.buffer, text)
 
     if #self.buffer > 4 then
