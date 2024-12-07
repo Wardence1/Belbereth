@@ -11,6 +11,7 @@ local push = require("lib.push")
 
 local shouldUpdate = false -- When true the whole game will update one tick
 local ticks = 0
+local altControls = false
 
 function gameScene:load(...)
     -- Generate the dungeon
@@ -59,38 +60,89 @@ end
 
 function gameScene:keypressed(key, scancode, isrepeat)
     -- CONTROLS
+    local tick = false -- Is set to true if a pressed key sets the game to tick
     if not isrepeat then
         -- Move the player
-        -- cardinal directions
-        if key == "w" then -- up
-            player.velY = player.velY - 1
-        end
-        if key == "s" then -- down
-            player.velY = player.velY + 1
-        end
-        if key == "a" then -- left
-            player.velX = player.velX - 1
-        end
-        if key == "d" then -- right
-            player.velX = player.velX + 1
-        end
-        -- diagnals
+        if altControls then -- Basic controls
+            -- cardinal directions
+            if key == "w" then -- up
+                player.velY = player.velY - 1
+                tick = true
+            end
+            if key == "s" then -- down
+                player.velY = player.velY + 1
+                tick = true
+            end
+            if key == "a" then -- left
+                player.velX = player.velX - 1
+                tick = true
+            end
+            if key == "d" then -- right
+                player.velX = player.velX + 1
+                tick = true
+            end
+            -- diagnals
 
-        if key == "q" then -- up-left
-            player.velY = player.velY - 1
-            player.velX = player.velX - 1
-        end
-        if key == "e" then -- up-right
-            player.velY = player.velY - 1
-            player.velX = player.velX + 1
-        end
-        if key == "z" then -- down-left
-        player.velY = player.velY + 1
-            player.velX = player.velX - 1
-        end
-        if key == "c" then -- down-right
+            if key == "q" then -- up-left
+                player.velY = player.velY - 1
+                player.velX = player.velX - 1
+                tick = true
+            end
+            if key == "e" then -- up-right
+                player.velY = player.velY - 1
+                player.velX = player.velX + 1
+                tick = true
+            end
+            if key == "z" then -- down-left
             player.velY = player.velY + 1
-            player.velX = player.velX + 1
+                player.velX = player.velX - 1
+                tick = true
+            end
+            if key == "c" then -- down-right
+                player.velY = player.velY + 1
+                player.velX = player.velX + 1
+                tick = true
+            end
+        else -- Nethack / Rouge controls
+            -- cardinal directions
+            if key == "k" then -- up
+                player.velY = player.velY - 1
+                tick = true
+            end
+            if key == "j" then -- down
+                player.velY = player.velY + 1
+                tick = true
+            end
+            if key == "h" then -- left
+                player.velX = player.velX - 1
+                tick = true
+            end
+            if key == "l" then -- right
+                player.velX = player.velX + 1
+                tick = true
+            end
+            -- diagnals
+
+            if key == "y" then -- up-left
+                player.velY = player.velY - 1
+                player.velX = player.velX - 1
+                tick = true
+            end
+            if key == "u" then -- up-right
+                player.velY = player.velY - 1
+                player.velX = player.velX + 1
+                tick = true
+            end
+            if key == "b" then -- down-left
+            player.velY = player.velY + 1
+                player.velX = player.velX - 1
+                tick = true
+            end
+            if key == "n" then -- down-right
+                player.velY = player.velY + 1
+                player.velX = player.velX + 1
+                tick = true
+            end
         end
 
 
@@ -99,10 +151,13 @@ function gameScene:keypressed(key, scancode, isrepeat)
             rPan.inventory = not rPan.inventory
         end
 
+        -- rest ** tick the game
+        if key == "." then
+            tick = true
+        end
+
         -- Add turn
-        if key == "w" or key == "a" or key == "s" or key == "d" or
-        key == "q" or key == "e" or key == "z" or key == "c" or
-        key == "." then
+        if tick then
             shouldUpdate = true
         end
     end
