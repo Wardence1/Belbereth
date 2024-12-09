@@ -7,7 +7,12 @@ local terminal = require("src.panels.bottomPanel")
 
 local player = {}
 
--- Initial varaibles
+-- Initial values
+
+-- tribs
+player.name = "Player"
+
+-- pos
 player.velX = 0
 player.velY = 0
 
@@ -15,6 +20,19 @@ player.velY = 0
 function player:spawn(tileX, tileY, class)
     self.tileX = tileX
     self.tileY = tileY
+
+    -- Initialize variables based on the player's class
+    -- basic
+    if class == "tourist" then
+        self.hp = 20
+        self.money = 5
+        self.str = 5
+        self.def = 0
+    else
+        error(class .. " is not a valid class.")
+    end
+
+    self.class = class
 
     -- Focus the camera on the player
     camera:lookAt((player.tileX * tile.size) + tile.size / 2, (player.tileY * tile.size) + tile.size / 2)

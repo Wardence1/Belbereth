@@ -49,7 +49,7 @@ function dungGen:generateDungeonLevel()
     thisLevel:addTile(nil, 7, 9)
 
     -- Spawn the player
-    player:spawn(1, 1)
+    player:spawn(1, 1, "tourist")
 
     -- Add the created level to the first floor
     levelMan:addLevel(thisLevel, 1)

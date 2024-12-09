@@ -20,6 +20,8 @@ function images:load()
     -- Fonts
     images.tFont = love.graphics.newFont("res/fonts/VT323-Regular.ttf", 24) -- terminal font
     images.tFont:setFilter("nearest", "nearest") -- WHYYYY
+    images.titleFont = love.graphics.newFont("res/fonts/VT323-Regular.ttf", 32) -- Title for the inventory/stats panel
+    images.titleFont:setFilter("nearest", "nearest")
 end
 
 return images

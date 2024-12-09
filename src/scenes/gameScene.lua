@@ -40,7 +40,7 @@ end
 function gameScene:draw()
     -- GAME
     -- Setup the camera
-    camera:attach(0, 0, push:getWidth() - rPan.width, push:getHeight() - terminal.height)
+    camera:attach(0, 0, push:getWidth() - RIGHT_PANEL_WIDTH, push:getHeight() - BOTTOM_PANEL_HEIGHT)
 
     -- Top left game window
     levelMan:draw()
