@@ -26,22 +26,36 @@ function rPan:draw()
     -- Draw the inventory
     if self.inventory then
         -- Title
+        -- white box behind title
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", WINDOW_WIDTH - RIGHT_PANEL_WIDTH, WINDOW_HEIGHT - RIGHT_PANEL_HEIGHT,
+            RIGHT_PANEL_WIDTH, images.titleFont:getHeight("Inventory:") * 2)
         love.graphics.setFont(images.titleFont)
+        love.graphics.setColor(0, 0, 0)
         love.graphics.print("Inventory:",
             WINDOW_WIDTH - RIGHT_PANEL_WIDTH + (RIGHT_PANEL_WIDTH / 2) - (images.titleFont:getWidth("Inventory:") / 2),
-            self.spaceAm-5)
+            self.spaceAm - 5)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(images.tFont)
     else
         -- Title
+        -- white box behind title
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", WINDOW_WIDTH - RIGHT_PANEL_WIDTH, WINDOW_HEIGHT - RIGHT_PANEL_HEIGHT,
+            RIGHT_PANEL_WIDTH, images.titleFont:getHeight("Status:") * 2)
+
         love.graphics.setFont(images.titleFont)
+        love.graphics.setColor(0, 0, 0)
         love.graphics.print("Stats:",
             WINDOW_WIDTH - RIGHT_PANEL_WIDTH + (RIGHT_PANEL_WIDTH / 2) - (images.titleFont:getWidth("Stats:") / 2),
-            self.spaceAm-5)
+            self.spaceAm - 5)
+        love.graphics.setColor(1, 1, 1)
+
         love.graphics.setFont(images.tFont)
 
         -- name
         love.graphics.print(player.name .. " the " .. capFirst(player.class),
-        WINDOW_WIDTH - RIGHT_PANEL_WIDTH + self.sideOff, images.titleFont:getHeight("Status:") + self.spaceAm * 2)
+            WINDOW_WIDTH - RIGHT_PANEL_WIDTH + self.sideOff, images.titleFont:getHeight("Status:") + self.spaceAm * 2)
 
         -- hp
         love.graphics.print("HP: " .. player.hp, WINDOW_WIDTH - RIGHT_PANEL_WIDTH + self.sideOff,
