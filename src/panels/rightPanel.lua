@@ -6,21 +6,33 @@ local player = require("src.entities.player")
 local capFirst = require("src.helpers.capFirst")
 
 local rPan = {}
-rPan.inventory = false -- If true the inventory will draw instead of the player stats
+rPan.inventory = false -- If true the inventory will draw
+rPan.stats = false     -- If true player stats will draw
+rPan.active = false    -- Is true if anything is displaying on the right panel
 rPan.bThick = 3        -- Border thickness
 rPan.sideOff = 7       -- How far away the text is from the left side of the panel
 rPan.spaceAm = 20      -- Amount of space between each stat
 
-function rPan:draw()
-    -- Draw a black rectangle to cut off the game
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("fill", WINDOW_WIDTH - RIGHT_PANEL_WIDTH, WINDOW_HEIGHT - RIGHT_PANEL_HEIGHT,
-        RIGHT_PANEL_WIDTH, RIGHT_PANEL_HEIGHT)
-    -- draw the white border
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("fill", (WINDOW_WIDTH - RIGHT_PANEL_WIDTH) - math.floor(self.bThick / 2),
-        WINDOW_HEIGHT - RIGHT_PANEL_HEIGHT, self.bThick, RIGHT_PANEL_HEIGHT)
+-- Only needed to set self.active accordingly
+function rPan:update()
+    if self.inventory or self.stats then
+        self.active = true
+    else
+        self.active = false
+    end
+end
 
+function rPan:draw()
+    if self.active then
+        -- Draw a black rectangle to cut off the game
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("fill", WINDOW_WIDTH - RIGHT_PANEL_WIDTH, WINDOW_HEIGHT - RIGHT_PANEL_HEIGHT,
+            RIGHT_PANEL_WIDTH, RIGHT_PANEL_HEIGHT)
+        -- draw the white border
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", (WINDOW_WIDTH - RIGHT_PANEL_WIDTH) - math.floor(self.bThick / 2),
+            WINDOW_HEIGHT - RIGHT_PANEL_HEIGHT, self.bThick, RIGHT_PANEL_HEIGHT)
+    end
     love.graphics.setFont(images.tFont)
 
     -- Draw the inventory
@@ -37,7 +49,7 @@ function rPan:draw()
             self.spaceAm - 5)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(images.tFont)
-    else
+    elseif self.stats then
         -- Title
         -- white box behind title
         love.graphics.setColor(1, 1, 1)

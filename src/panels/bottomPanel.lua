@@ -13,11 +13,17 @@ function bPan:draw()
     -- Draw a black rectangle to cut off the game
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("fill", 0, WINDOW_HEIGHT - BOTTOM_PANEL_HEIGHT, BOTTOM_PANEL_WIDTH, BOTTOM_PANEL_HEIGHT)
-    -- draw the white border
+    -- Draw the white border
     love.graphics.setColor(1, 1, 1)
+    -- top
     love.graphics.rectangle("fill", 0, (WINDOW_HEIGHT - BOTTOM_PANEL_HEIGHT) - math.floor(self.bThick / 2),
         BOTTOM_PANEL_WIDTH,
         self.bThick)
+    -- right
+    love.graphics.rectangle("fill", BOTTOM_PANEL_WIDTH - math.floor(self.bThick / 2),
+        (WINDOW_HEIGHT - BOTTOM_PANEL_HEIGHT) - math.floor(self.bThick / 2),
+        self.bThick,
+        BOTTOM_PANEL_HEIGHT)
 
     -- Draw the text
     love.graphics.setFont(images.tFont)

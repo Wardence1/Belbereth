@@ -6,12 +6,10 @@ local rPan = require("src.panels.rightPanel")
 local terminal = require("src.panels.bottomPanel")
 local camera = require("lib.camera")
 local player = require("src.entities.player")
-local tile = require("src.map.tile")
 local push = require("lib.push")
 
 local shouldUpdate = false -- When true the whole game will update one tick
 local ticks = 0
-local altControls = false
 
 function gameScene:load(...)
     -- Generate the dungeon
@@ -28,6 +26,10 @@ function gameScene:delete(...)
 end
 
 function gameScene:update(dt)
+    -- Functions that update constantly
+    rPan:update()
+
+    -- Functions that update after a tick
     if shouldUpdate then
         -- Update everything
         player:update()
@@ -40,7 +42,12 @@ end
 function gameScene:draw()
     -- GAME
     -- Setup the camera
-    camera:attach(0, 0, push:getWidth() - RIGHT_PANEL_WIDTH, push:getHeight() - BOTTOM_PANEL_HEIGHT)
+    if rPan.active then
+        camera:attach(0, 0, push:getWidth() - RIGHT_PANEL_WIDTH, push:getHeight() - BOTTOM_PANEL_HEIGHT)
+    else
+        -- The offset is so the player's y position on the camera stays the same
+        camera:attach(0, -BOTTOM_PANEL_HEIGHT, push:getWidth(), push:getHeight() + BOTTOM_PANEL_HEIGHT)
+    end
 
     -- Top left game window
     levelMan:draw()
@@ -62,93 +69,61 @@ function gameScene:keypressed(key, scancode, isrepeat)
     -- CONTROLS
     local tick = false -- Is set to true if a pressed key sets the game to tick
     if not isrepeat then
-        -- Move the player
-        if altControls then -- Basic controls
-            -- cardinal directions
-            if key == "w" then -- up
-                player.velY = player.velY - 1
-                tick = true
-            end
-            if key == "s" then -- down
-                player.velY = player.velY + 1
-                tick = true
-            end
-            if key == "a" then -- left
-                player.velX = player.velX - 1
-                tick = true
-            end
-            if key == "d" then -- right
-                player.velX = player.velX + 1
-                tick = true
-            end
-            -- diagnals
-
-            if key == "q" then -- up-left
-                player.velY = player.velY - 1
-                player.velX = player.velX - 1
-                tick = true
-            end
-            if key == "e" then -- up-right
-                player.velY = player.velY - 1
-                player.velX = player.velX + 1
-                tick = true
-            end
-            if key == "z" then -- down-left
+        -- Move the player                  -- Nethack / Rouge controls
+        -- cardinal directions
+        if key == "k" then     -- up
+            player.velY = player.velY - 1
+            tick = true
+        end
+        if key == "j" then     -- down
             player.velY = player.velY + 1
-                player.velX = player.velX - 1
-                tick = true
-            end
-            if key == "c" then -- down-right
-                player.velY = player.velY + 1
-                player.velX = player.velX + 1
-                tick = true
-            end
-        else -- Nethack / Rouge controls
-            -- cardinal directions
-            if key == "k" then -- up
-                player.velY = player.velY - 1
-                tick = true
-            end
-            if key == "j" then -- down
-                player.velY = player.velY + 1
-                tick = true
-            end
-            if key == "h" then -- left
-                player.velX = player.velX - 1
-                tick = true
-            end
-            if key == "l" then -- right
-                player.velX = player.velX + 1
-                tick = true
-            end
-            -- diagnals
-
-            if key == "y" then -- up-left
-                player.velY = player.velY - 1
-                player.velX = player.velX - 1
-                tick = true
-            end
-            if key == "u" then -- up-right
-                player.velY = player.velY - 1
-                player.velX = player.velX + 1
-                tick = true
-            end
-            if key == "b" then -- down-left
+            tick = true
+        end
+        if key == "h" then     -- left
+            player.velX = player.velX - 1
+            tick = true
+        end
+        if key == "l" then     -- right
+            player.velX = player.velX + 1
+            tick = true
+        end
+        -- diagnals
+        if key == "y" then     -- up-left
+            player.velY = player.velY - 1
+            player.velX = player.velX - 1
+            tick = true
+        end
+        if key == "u" then     -- up-right
+            player.velY = player.velY - 1
+            player.velX = player.velX + 1
+            tick = true
+        end
+        if key == "b" then     -- down-left
             player.velY = player.velY + 1
-                player.velX = player.velX - 1
-                tick = true
-            end
-            if key == "n" then -- down-right
-                player.velY = player.velY + 1
-                player.velX = player.velX + 1
-                tick = true
-            end
+            player.velX = player.velX - 1
+            tick = true
+        end
+        if key == "n" then     -- down-right
+            player.velY = player.velY + 1
+            player.velX = player.velX + 1
+            tick = true
         end
 
 
-        -- Toggle the inventory
+        -- Activate the inventory
         if key == "i" then
-            rPan.inventory = not rPan.inventory
+            rPan.inventory = true
+            rPan.stats = false
+        end
+        -- Activate the stats
+        if key == "s" then
+            rPan.stats = true
+            rPan.inventory = false
+        end
+        -- Disable the right panel
+        if key == "escape" then
+            rPan.stats = false
+            rPan.inventory = false
         end
 
         -- rest ** tick the game
